@@ -3,6 +3,29 @@
 (function(window, _, $, undefined) {
 'use strict';
 
+$.fn.extend({
+  svgAddClass: function(className) {
+    return this.each(function() {
+      var $this = $(this);
+      var classList = $this.attr('class').split(' ');
+      if (_.indexOf(classList, className) === -1) {
+        classList.push(className);
+        $this.attr('class', classList.join(' '));
+      }
+    });
+  },
+  svgRemoveClass: function(className) {
+    return this.each(function() {
+      var $this = $(this);
+      var classList = $this.attr('class').split(' ');
+      if (_.indexOf(classList, className) > -1) {
+        classList = _.without(classList, className);
+        $this.attr('class', classList.join(' '));
+      }
+    });
+  }
+});
+
 var FULL_NUMBERS = [1,2,3,4,5,6,7,8,9];
 
 function nextCell(x, y, numbers, matrix) {
@@ -101,15 +124,51 @@ var fillBoard = window.fillBoard = function() {
     for (var y = 0; y < 9; y++) {
       var n = matrix[y][x];
       var $number = $('.number.row-'+y+'.column-'+x);
+      var $cell   = $('.cell.row-'+y+'.column-'+x);
+      $cell.data({x: x, y: y});
       if (n != null) {
         $number.html(n);
+        $cell.data({n: n});
       } else {
-        $number.attr('class', $number.attr('class')+' empty');
+        $number.svgAddClass('empty');
+        $cell.svgAddClass('empty').data({n: null});
       }
     }
   }
 };
 
+var NumPad = window.NumPad = function() {
+  var $numPad = this.$numPad = $('.num-pad');
+  $numPad.on('click', '.num-pad-cell', function() {
+    $numPad.trigger('numSelect', Number($(this).attr('data-num')));
+  });
+
+  this.showNumPad = function(x, y, callback) {
+    $numPad.attr('class', 'num-pad').svgRemoveClass('hide').svgAddClass('pos-'+x+'-'+y);
+    $numPad.one('numSelect', function(event, n) {
+      callback(n);
+      $numPad.svgAddClass('hide');
+    });
+  };
+};
+
+var numPad = new NumPad;
+
 fillBoard();
+
+var $numPad = $('.num-pad');
+var $cells  = $('.cell');
+
+$('.paper').on('click', '.cell-num-g', function(event) {
+  var $this = $(this).find('.cell');
+  var x = $this.data('x');
+  var y = $this.data('y');
+  $cells.svgRemoveClass('selected');
+  $this.svgAddClass('selected');
+  numPad.showNumPad(x, y, function(n) {
+    $this.svgRemoveClass('selected');
+    $('.number.row-'+y+'.column-'+x).text(n);
+  });
+});
 
 })(window, _, jQuery);

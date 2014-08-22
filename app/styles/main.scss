@@ -27,12 +27,15 @@ text {
   stroke-width: 2;
   stroke: #000;
   fill: transparent;
+  &.selected {
+    fill: #81F3FD;
+  }
 }
 
 .number {
   fill: #000;
   &.empty {
-    fill: red;
+    fill: #FF3B30;
   }
 }
 
@@ -45,10 +48,28 @@ text {
   &.hide {
     display: none;
   }
+
+  @for $x from 0 through 8 {
+    @for $y from 0 through 8 {
+      &.pos-#{$x}-#{$y} {
+        @if $x == 0 {
+          transform: translate(-32px + 1 * 32px, -98px + $y * 32px);
+        } @else if $x == 8 {
+          transform: translate(-32px + 7 * 32px, -98px + $y * 32px);
+        } @else {
+          transform: translate(-32px + $x * 32px, -98px + $y * 32px);
+        }
+      }
+    }
+  }
+}
+
+.num-pad-background {
+  fill: #FFF;
 }
 
 .num-pad-cell {
   stroke-width: 2;
   stroke: #FF9500;
-  fill: #FFF;
+  fill: transparent;
 }

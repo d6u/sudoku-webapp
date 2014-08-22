@@ -20,17 +20,19 @@ html.no-js
           g.board
             - for (var x = 0; x < 9; x++)
               - for (var y = 0; y < 9; y++)
-                text.number(class=['square-#{Math.floor(x/3)}-#{Math.floor(y/3)}', 'row-#{y}', 'column-#{x}'] x=x*l+10 y=y*l+24)
-                rect.cell(class=['square-#{Math.floor(x/3)}-#{Math.floor(y/3)}', 'row-#{y}', 'column-#{x}'] x=x*l y=y*l width=l height=l)
+                g.cell-num-g(class=['square-#{Math.floor(x/3)}-#{Math.floor(y/3)}', 'row-#{y}', 'column-#{x}'])
+                  rect.cell(class=['square-#{Math.floor(x/3)}-#{Math.floor(y/3)}', 'row-#{y}', 'column-#{x}'] x=x*l y=y*l width=l height=l)
+                  text.number(class=['square-#{Math.floor(x/3)}-#{Math.floor(y/3)}', 'row-#{y}', 'column-#{x}'] x=x*l+10 y=y*l+24)
           g.background
             - for (var x = 0; x < 3; x++)
               - for (var y = 0; y < 3; y++)
                 rect.square(class='square-#{x}-#{y}' x=x*l*3 y=y*l*3 width=l*3 height=l*3)
-        g.num-pad.hide
-          - for (var x = 0; x < 3; x++)
-            - for (var y = 0; y < 3; y++)
-              rect.num-pad-cell(class='cell-num-#{y*3+x+1}' x=x*l y=y*l width=l height=l)
-              text.number(x=x*l+10 y=y*l+24)= y*3+x+1
+          g.num-pad.hide
+            rect.num-pad-background(x=0 y=0 width=l*3 height=l*3)
+            - for (var x = 0; x < 3; x++)
+              - for (var y = 0; y < 3; y++)
+                text.number(x=x*l+10 y=y*l+24)= y*3+x+1
+                rect.num-pad-cell(class='cell-num-#{y*3+x+1}' x=x*l y=y*l width=l height=l data-num=y*3+x+1)
 
     // build:js scripts/vendor.js
     script(src='bower_components/jquery/jquery.js')
