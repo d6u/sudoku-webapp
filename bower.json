@@ -2,8 +2,9 @@
   "name": "sudoku",
   "private": true,
   "dependencies": {
-    "jquery": "~1.11.0",
-    "lodash": "~2.4.1"
+    "jquery": "~2.0",
+    "lodash": "~2.4.1",
+    "normalize-scss": "~3.0.1"
   },
   "devDependencies": {}
 }

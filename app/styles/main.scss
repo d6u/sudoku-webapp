@@ -1,28 +1,54 @@
+@import '../bower_components/normalize-scss/normalize';
+
 body {
-    background: #fafafa;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #333;
+  background: #FFF;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.hero-unit {
-    margin: 50px auto 0 auto;
-    width: 300px;
-    font-size: 18px;
-    font-weight: 200;
-    line-height: 30px;
-    background-color: #eee;
-    border-radius: 6px;
-    padding: 60px;
-    h1 {
-        font-size: 60px;
-        line-height: 1;
-        letter-spacing: -1px;
-    }
+.container {
+  padding: 15px;
 }
 
-.browsehappy {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
+// SVG Styles
+//
+svg {
+  display: block;
+}
+
+rect {
+  fill: none;
+}
+
+text {
+  font-size: 20px;
+}
+
+.cell {
+  stroke-width: 2;
+  stroke: #000;
+  fill: transparent;
+}
+
+.number {
+  fill: #000;
+  &.empty {
+    fill: red;
+  }
+}
+
+.square {
+  stroke-width: 4;
+  stroke: #000;
+}
+
+.num-pad {
+  &.hide {
+    display: none;
+  }
+}
+
+.num-pad-cell {
+  stroke-width: 2;
+  stroke: #FF9500;
+  fill: #FFF;
 }
