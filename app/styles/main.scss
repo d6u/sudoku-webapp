@@ -7,7 +7,7 @@ html, body, .container {
 
 body {
   background: #FFF;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 }
 
 .container {
@@ -28,6 +28,10 @@ text {
   font-size: 20px;
 }
 
+.reset-btn, .new-game-btn {
+  cursor: pointer;
+}
+
 .btn-text {
   fill: #FFF;
   font-size: 16px;
@@ -41,6 +45,11 @@ text {
   &.invalid {
     .cell {
       fill: #FFD3E0;
+    }
+  }
+  &.valid {
+    .number {
+      fill: green;
     }
   }
 }

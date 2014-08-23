@@ -4,25 +4,31 @@
 'use strict';
 
 $.fn.extend({
-  svgAddClass: function(className) {
-    return this.each(function() {
-      var $this = $(this);
-      var classList = $this.attr('class').split(' ');
-      if (_.indexOf(classList, className) === -1) {
-        classList.push(className);
-        $this.attr('class', classList.join(' '));
-      }
-    });
+  svgAddClass: function(classNames) {
+    _.forEach(classNames.split(' '), function(className) {
+      this.each(function() {
+        var $this = $(this);
+        var classList = $this.attr('class').split(' ');
+        if (_.indexOf(classList, className) === -1) {
+          classList.push(className);
+          $this.attr('class', classList.join(' '));
+        }
+      });
+    }, this);
+    return this;
   },
-  svgRemoveClass: function(className) {
-    return this.each(function() {
-      var $this = $(this);
-      var classList = $this.attr('class').split(' ');
-      if (_.indexOf(classList, className) > -1) {
-        classList = _.without(classList, className);
-        $this.attr('class', classList.join(' '));
-      }
-    });
+  svgRemoveClass: function(classNames) {
+    _.forEach(classNames.split(' '), function(className) {
+      this.each(function() {
+        var $this = $(this);
+        var classList = $this.attr('class').split(' ');
+        if (_.indexOf(classList, className) > -1) {
+          classList = _.without(classList, className);
+          $this.attr('class', classList.join(' '));
+        }
+      });
+    }, this);
+    return this;
   }
 });
 
@@ -30,7 +36,7 @@ var FULL_NUMBERS = [1,2,3,4,5,6,7,8,9];
 var CLICK_EVENT  = 'click';
 var $groups      = $('.cell-num-g');
 
-function nextCell(x, y, numbers, matrix) {
+var nextCell = window.nextCell = function(x, y, numbers, matrix) {
   if (y > 8) return true;
   if (x === 0) numbers = FULL_NUMBERS;
 
@@ -122,7 +128,7 @@ var generateSudokuPuzzel = window.generateSudokuPuzzel = function() {
 
 var fillBoard = window.fillBoard = function() {
   var matrix = generateSudokuPuzzel();
-  $groups.svgRemoveClass('empty').svgRemoveClass('invalid').each(function() {
+  $groups.svgRemoveClass('empty invalid valid').each(function() {
     $(this).data({x: null, y: null, n: null}).find('.number').empty();
   });
   for (var x = 0; x < 9; x++) {
@@ -246,7 +252,7 @@ var validateSolution = window.validateSolution = function() {
   }
 
   if (count === 27) {
-    console.log('finished');
+    $groups.svgAddClass('valid');
   }
 };
 
@@ -276,7 +282,7 @@ $('.new-game-btn').on(CLICK_EVENT, function() {
 
 $('.reset-btn').on(CLICK_EVENT, function() {
   if (confirm('Remove all your answers?')) {
-    $groups.svgRemoveClass('invalid').filter('.empty').each(function() {
+    $groups.svgRemoveClass('invalid valid').filter('.empty').each(function() {
       $(this).data({n: null}).find('.number').empty();
     });
   }

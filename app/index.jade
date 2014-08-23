@@ -17,11 +17,11 @@ html.no-js
       - var l = 32;
       svg.paper(viewBox='0 0 #{2+l*9} #{4+l*12}' width='100%' height='100%')
         g.reset-btn
-          circle(cx=2*l cy=1.5*l r=l fill="#000")
-          text.btn-text(x=1.2*l y=1.7*l) RESET
+          circle(cx=2*l cy=1.5*l r=l)
+          text.btn-text(x=1.25*l y=1.7*l) RESET
         g.new-game-btn
-          circle(cx=7*l cy=1.5*l r=l fill="#000")
-          text.btn-text(x=6.45*l y=1.7*l) NEW
+          circle(cx=7*l cy=1.5*l r=l)
+          text.btn-text(x=6.55*l y=1.7*l) NEW
         g(transform='translate(1, #{3+l*3})')
           g.board
             - for (var x = 0; x < 9; x++)
