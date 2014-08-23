@@ -1,6 +1,6 @@
 /* global _: false */
 
-(function(window, _, $, undefined) {
+(function(window, _, $, Modernizr, undefined) {
 'use strict';
 
 $.fn.extend({
@@ -33,7 +33,7 @@ $.fn.extend({
 });
 
 var FULL_NUMBERS = [1,2,3,4,5,6,7,8,9];
-var CLICK_EVENT  = 'click';
+var CLICK_EVENT  = Modernizr.touch ? 'tap' : 'click';
 var $groups      = $('.cell-num-g');
 
 var nextCell = window.nextCell = function(x, y, numbers, matrix) {
@@ -149,11 +149,11 @@ var NumPad = window.NumPad = function() {
   var $numPad = this.$numPad = $('.num-pad');
   var $backplate = this.$backplate = $('.num-pad-backplate');
 
-  $numPad.on(CLICK_EVENT, '.num-pad-cell', function() {
+  $numPad.hammer().on(CLICK_EVENT, '.num-pad-cell', function() {
     $numPad.trigger('numSelect', Number($(this).attr('data-num')));
   });
 
-  $backplate.on(CLICK_EVENT, function() {
+  $backplate.hammer().on(CLICK_EVENT, function() {
     $numPad.off('numSelect');
     $backplate.svgAddClass('hide');
     $numPad.svgAddClass('hide');
@@ -256,7 +256,7 @@ var validateSolution = window.validateSolution = function() {
   }
 };
 
-$('.paper').on(CLICK_EVENT, '.cell-num-g.empty', function(event) {
+$('.paper').hammer().on(CLICK_EVENT, '.cell-num-g.empty', function(event) {
   var $g = $(this);
   var x = $g.data('x');
   var y = $g.data('y');
@@ -274,13 +274,13 @@ $('.paper').on(CLICK_EVENT, '.cell-num-g.empty', function(event) {
 
 fillBoard();
 
-$('.new-game-btn').on(CLICK_EVENT, function() {
+$('.new-game-btn').hammer().on(CLICK_EVENT, function() {
   if (confirm('Sure to start a new game?')) {
     fillBoard();
   }
 });
 
-$('.reset-btn').on(CLICK_EVENT, function() {
+$('.reset-btn').hammer().on(CLICK_EVENT, function() {
   if (confirm('Remove all your answers?')) {
     $groups.svgRemoveClass('invalid valid').filter('.empty').each(function() {
       $(this).data({n: null}).find('.number').empty();
@@ -288,4 +288,4 @@ $('.reset-btn').on(CLICK_EVENT, function() {
   }
 });
 
-})(window, _, jQuery);
+})(window, _, jQuery, Modernizr);
