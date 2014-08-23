@@ -275,17 +275,21 @@ $('.paper').hammer().on(CLICK_EVENT, '.cell-num-g.empty', function(event) {
 fillBoard();
 
 $('.new-game-btn').hammer().on(CLICK_EVENT, function() {
-  if (confirm('Sure to start a new game?')) {
-    fillBoard();
-  }
+  setTimeout(function() {
+    if (confirm('Sure to start a new game?')) {
+      fillBoard();
+    }
+  });
 });
 
 $('.reset-btn').hammer().on(CLICK_EVENT, function() {
-  if (confirm('Remove all your answers?')) {
-    $groups.svgRemoveClass('invalid valid').filter('.empty').each(function() {
-      $(this).data({n: null}).find('.number').empty();
-    });
-  }
+  setTimeout(function() {
+    if (confirm('Remove all your answers?')) {
+      $groups.svgRemoveClass('invalid valid').filter('.empty').each(function() {
+        $(this).data({n: null}).find('.number').empty();
+      });
+    }
+  });
 });
 
 })(window, _, jQuery, Modernizr);
