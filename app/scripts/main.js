@@ -28,6 +28,7 @@ $.fn.extend({
 
 var FULL_NUMBERS = [1,2,3,4,5,6,7,8,9];
 var CLICK_EVENT  = 'click';
+var $groups      = $('.cell-num-g');
 
 function nextCell(x, y, numbers, matrix) {
   if (y > 8) return true;
@@ -121,6 +122,9 @@ var generateSudokuPuzzel = window.generateSudokuPuzzel = function() {
 
 var fillBoard = window.fillBoard = function() {
   var matrix = generateSudokuPuzzel();
+  $groups.svgRemoveClass('empty').svgRemoveClass('invalid').each(function() {
+    $(this).data({x: null, y: null, n: null}).find('.number').empty();
+  });
   for (var x = 0; x < 9; x++) {
     for (var y = 0; y < 9; y++) {
       var n = matrix[y][x];
@@ -163,8 +167,6 @@ var NumPad = window.NumPad = function() {
 };
 
 var numPad = new NumPad();
-
-var $groups = $('.cell-num-g');
 
 var validateSolution = window.validateSolution = function() {
 
@@ -265,5 +267,19 @@ $('.paper').on(CLICK_EVENT, '.cell-num-g.empty', function(event) {
 });
 
 fillBoard();
+
+$('.new-game-btn').on(CLICK_EVENT, function() {
+  if (confirm('Sure to start a new game?')) {
+    fillBoard();
+  }
+});
+
+$('.reset-btn').on(CLICK_EVENT, function() {
+  if (confirm('Remove all your answers?')) {
+    $groups.svgRemoveClass('invalid').filter('.empty').each(function() {
+      $(this).data({n: null}).find('.number').empty();
+    });
+  }
+});
 
 })(window, _, jQuery);
