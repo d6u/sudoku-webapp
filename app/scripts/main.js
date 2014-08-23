@@ -123,15 +123,12 @@ var fillBoard = window.fillBoard = function() {
   for (var x = 0; x < 9; x++) {
     for (var y = 0; y < 9; y++) {
       var n = matrix[y][x];
-      var $number = $('.number.row-'+y+'.column-'+x);
-      var $cell   = $('.cell.row-'+y+'.column-'+x);
-      $cell.data({x: x, y: y});
+      var $g = $('.cell-num-g.row-'+y+'.column-'+x);
+      $g.data({x: x, y: y});
       if (n != null) {
-        $number.html(n);
-        $cell.data({n: n});
+        $g.data({n: n}).children('.number').html(n);
       } else {
-        $number.svgAddClass('empty');
-        $cell.svgAddClass('empty').data({n: null});
+        $g.svgAddClass('empty');
       }
     }
   }
@@ -145,30 +142,36 @@ var NumPad = window.NumPad = function() {
 
   this.showNumPad = function(x, y, callback) {
     $numPad.attr('class', 'num-pad').svgRemoveClass('hide').svgAddClass('pos-'+x+'-'+y);
-    $numPad.one('numSelect', function(event, n) {
+    $numPad.off('numSelect').one('numSelect', function(event, n) {
       callback(n);
       $numPad.svgAddClass('hide');
     });
   };
 };
 
-var numPad = new NumPad;
+var numPad = new NumPad();
 
-fillBoard();
+var $groups = $('.cell-num-g');
 
-var $numPad = $('.num-pad');
-var $cells  = $('.cell');
+// var validateSolution = window.validateSolution = function() {
+//   for (var x = 0; x < 9; x++) {
 
-$('.paper').on('click', '.cell-num-g', function(event) {
-  var $this = $(this).find('.cell');
-  var x = $this.data('x');
-  var y = $this.data('y');
-  $cells.svgRemoveClass('selected');
-  $this.svgAddClass('selected');
+//   }
+// };
+
+$('.paper').on('click', '.cell-num-g.empty', function(event) {
+  var $g = $(this);
+  $groups.svgRemoveClass('selected');
+  var x = $g.data('x');
+  var y = $g.data('y');
+  $g.svgAddClass('selected');
   numPad.showNumPad(x, y, function(n) {
-    $this.svgRemoveClass('selected');
-    $('.number.row-'+y+'.column-'+x).text(n);
+    $g.svgRemoveClass('selected');
+    $g.data({n: n});
+    $g.find('.number').html(n);
   });
 });
+
+fillBoard();
 
 })(window, _, jQuery);

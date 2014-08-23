@@ -23,18 +23,25 @@ text {
   font-size: 20px;
 }
 
+.cell-num-g {
+  cursor: default;
+  &.empty {
+    cursor: pointer;
+  }
+}
+
 .cell {
   stroke-width: 2;
   stroke: #000;
   fill: transparent;
-  &.selected {
-    fill: #81F3FD;
+  .selected & {
+    fill: #C7C7CC;
   }
 }
 
 .number {
   fill: #000;
-  &.empty {
+  .empty & {
     fill: #FF3B30;
   }
 }
@@ -72,4 +79,5 @@ text {
   stroke-width: 2;
   stroke: #FF9500;
   fill: transparent;
+  cursor: pointer;
 }
