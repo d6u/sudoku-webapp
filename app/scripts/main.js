@@ -27,6 +27,7 @@ $.fn.extend({
 });
 
 var FULL_NUMBERS = [1,2,3,4,5,6,7,8,9];
+var CLICK_EVENT  = 'click';
 
 function nextCell(x, y, numbers, matrix) {
   if (y > 8) return true;
@@ -136,16 +137,28 @@ var fillBoard = window.fillBoard = function() {
 
 var NumPad = window.NumPad = function() {
   var $numPad = this.$numPad = $('.num-pad');
-  $numPad.on('click', '.num-pad-cell', function() {
+  var $backplate = this.$backplate = $('.num-pad-backplate');
+
+  $numPad.on(CLICK_EVENT, '.num-pad-cell', function() {
     $numPad.trigger('numSelect', Number($(this).attr('data-num')));
   });
 
-  this.showNumPad = function(x, y, callback) {
+  $backplate.on(CLICK_EVENT, function() {
+    $numPad.off('numSelect');
+    $backplate.svgAddClass('hide');
+    $numPad.svgAddClass('hide');
+    $backplate.trigger('backplateClicked');
+  });
+
+  this.showNumPad = function(x, y, callback, cancel) {
+    $backplate.svgRemoveClass('hide');
     $numPad.attr('class', 'num-pad').svgRemoveClass('hide').svgAddClass('pos-'+x+'-'+y);
     $numPad.off('numSelect').one('numSelect', function(event, n) {
       callback(n);
+      $backplate.svgAddClass('hide');
       $numPad.svgAddClass('hide');
     });
+    $backplate.off('backplateClicked').one('backplateClicked', cancel);
   };
 };
 
@@ -235,7 +248,7 @@ var validateSolution = window.validateSolution = function() {
   }
 };
 
-$('.paper').on('click', '.cell-num-g.empty', function(event) {
+$('.paper').on(CLICK_EVENT, '.cell-num-g.empty', function(event) {
   var $g = $(this);
   var x = $g.data('x');
   var y = $g.data('y');
@@ -246,6 +259,8 @@ $('.paper').on('click', '.cell-num-g.empty', function(event) {
     $g.data({n: n});
     $g.find('.number').html(n);
     validateSolution();
+  }, function() {
+    $g.svgRemoveClass('selected');
   });
 });
 

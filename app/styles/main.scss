@@ -1,5 +1,10 @@
 @import '../bower_components/normalize-scss/normalize';
 
+html, body, .container {
+  box-sizing: border-box;
+  height: 100%;
+}
+
 body {
   background: #FFF;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -40,7 +45,7 @@ text {
   stroke: #000;
   fill: transparent;
   .selected & {
-    fill: #C7C7CC;
+    fill: #81F3FD;
   }
 }
 
@@ -56,9 +61,20 @@ text {
   stroke: #000;
 }
 
-.num-pad {
+.num-pad-backplate {
+  opacity: 1;
   &.hide {
     display: none;
+    opacity: 0;
+  }
+  fill: rgba(0, 0, 0, 0.2);
+}
+
+.num-pad {
+  opacity: 1;
+  &.hide {
+    display: none;
+    opacity: 0;
   }
 
   @for $x from 0 through 8 {

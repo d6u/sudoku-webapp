@@ -27,6 +27,7 @@ html.no-js
             - for (var x = 0; x < 3; x++)
               - for (var y = 0; y < 3; y++)
                 rect.square(class='square-#{x}-#{y}' x=x*l*3 y=y*l*3 width=l*3 height=l*3)
+          rect.num-pad-backplate.hide(x=0 y=0 width=9*l height=9*l)
           g.num-pad.hide
             rect.num-pad-background(x=0 y=0 width=l*3 height=l*3)
             - for (var x = 0; x < 3; x++)
