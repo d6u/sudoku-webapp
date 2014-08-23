@@ -28,6 +28,11 @@ text {
   &.empty {
     cursor: pointer;
   }
+  &.invalid {
+    .cell {
+      fill: #FFD3E0;
+    }
+  }
 }
 
 .cell {

@@ -153,22 +153,99 @@ var numPad = new NumPad();
 
 var $groups = $('.cell-num-g');
 
-// var validateSolution = window.validateSolution = function() {
-//   for (var x = 0; x < 9; x++) {
+var validateSolution = window.validateSolution = function() {
 
-//   }
-// };
+  $groups.svgRemoveClass('invalid');
+
+  var count = 0;
+
+  for (var x = 0; x < 9; x++) {
+    var array = [], filled = true, $eles = $();
+    for (var y = 0; y < 9; y++) {
+      var $el = $groups.filter('.row-'+y+'.column-'+x);
+      var n   = $el.data('n');
+      if (n != null) {
+        array.push(n);
+        $eles = $eles.add($el);
+      } else {
+        filled = false;
+        break;
+      }
+    }
+    if (filled) {
+      var rest = _.difference(FULL_NUMBERS, array);
+      if (!rest.length) {
+        count++;
+      } else {
+        $eles.svgAddClass('invalid');
+      }
+    }
+  }
+
+  for (var y = 0; y < 9; y++) {
+    var array = [], filled = true, $eles = $();
+    for (var x = 0; x < 9; x++) {
+      var $el = $groups.filter('.row-'+y+'.column-'+x);
+      var n   = $el.data('n');
+      if (n != null) {
+        array.push(n);
+        $eles = $eles.add($el);
+      } else {
+        filled = false;
+        break;
+      }
+    }
+    if (filled) {
+      var rest = _.difference(FULL_NUMBERS, array);
+      if (!rest.length) {
+        count++;
+      } else {
+        $eles.svgAddClass('invalid');
+      }
+    }
+  }
+
+  for (var x = 0; x < 3; x++) {
+    for (var y = 0; y < 3; y++) {
+      var array = [], filled = true;
+      var $eles = $groups.filter('.square-'+x+'-'+y);
+      for (var i = 0; i < $eles.length; i++) {
+        var $el = $eles.eq(i);
+        var n   = $el.data('n');
+        if (n != null) {
+          array.push(n);
+        } else {
+          filled = false;
+          break;
+        }
+      }
+      if (filled) {
+        var rest = _.difference(FULL_NUMBERS, array);
+        if (!rest.length) {
+          count++;
+        } else {
+          $eles.svgAddClass('invalid');
+        }
+      }
+    }
+  }
+
+  if (count === 27) {
+    console.log('finished');
+  }
+};
 
 $('.paper').on('click', '.cell-num-g.empty', function(event) {
   var $g = $(this);
-  $groups.svgRemoveClass('selected');
   var x = $g.data('x');
   var y = $g.data('y');
+  $groups.svgRemoveClass('selected');
   $g.svgAddClass('selected');
   numPad.showNumPad(x, y, function(n) {
     $g.svgRemoveClass('selected');
     $g.data({n: n});
     $g.find('.number').html(n);
+    validateSolution();
   });
 });
 
