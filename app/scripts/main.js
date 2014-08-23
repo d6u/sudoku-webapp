@@ -160,9 +160,20 @@ var NumPad = window.NumPad = function() {
     $backplate.trigger('backplateClicked');
   });
 
+  this.translateForCoord = function(x, y) {
+    if (x === 0) {
+      return "translate(0, "+(-98+y*32)+")";
+    } else if (x === 8) {
+      return "translate(192, "+(-98+y*32)+")";
+    } else {
+      return "translate("+(-32+x*32)+", "+(-98+y*32)+")";
+    }
+  };
+
   this.showNumPad = function(x, y, callback, cancel) {
     $backplate.svgRemoveClass('hide');
     $numPad.attr('class', 'num-pad').svgRemoveClass('hide').svgAddClass('pos-'+x+'-'+y);
+    $numPad.attr('transform', this.translateForCoord(x, y)); // for IE
     $numPad.off('numSelect').one('numSelect', function(event, n) {
       callback(n);
       $backplate.svgAddClass('hide');
